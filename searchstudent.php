@@ -1,12 +1,5 @@
 <?php
-// Your database connection code here
-// Replace these values with your own MySQL server information
-$host = "localhost";
-$user = "root";
-$password = "sekou";
-$database = "CP476_Student_Management"; // this needs to already exit. 
-// Connect to the database
-$connection = new mysqli($host, $user, $password, $database);
+include 'dbconnection.php';
 
 // Check which form was submitted
 #$form_name = $_GET['form_name'];

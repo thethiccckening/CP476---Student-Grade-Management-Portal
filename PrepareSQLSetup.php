@@ -1,18 +1,5 @@
 <?php
-// Replace these values with your own MySQL server information
-$host = "localhost";
-$user = "root";
-$password = "sekou";
-$database = "CP476_Student_Management"; // this needs to already exit. 
-
-// Connect to the database
-$connection = new mysqli($host, $user, $password, $database);
-
-// Check for connection errors
-if ($connection->connect_error) {
-    die("Connection failed: " . $connection->connect_error);
-}
-
+include 'dbconnection.php';
 
 //for a brand new setup 
 $sql = "DROP TABLE IF EXISTS FinalGrades;
@@ -51,10 +38,10 @@ if ($connection->query($sql) === TRUE) {
 $sql = "CREATE TABLE Courses (
   Student_ID INT,
   Course_Code VARCHAR(10),
-  Test_1 DECIMAL(3, 1),
-  Test_2 DECIMAL(3, 1),
-  Test_3 DECIMAL(3, 1),
-  Final_exam DECIMAL(3, 1),
+  Test_1 DECIMAL(4, 1),
+  Test_2 DECIMAL(4, 1),
+  Test_3 DECIMAL(4, 1),
+  Final_exam DECIMAL(4, 1),
   PRIMARY KEY (Student_ID, Course_Code),
   FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID)
 )";
@@ -71,7 +58,7 @@ $sql = "CREATE TABLE FinalGrades (
   Student_ID INT,
   Course_Code VARCHAR(10),
   Student_Name VARCHAR(255),
-  Final_grade DECIMAL(3, 1),
+  Final_grade DECIMAL(4, 1),
   PRIMARY KEY (Student_ID, Course_Code),
   FOREIGN KEY (Student_ID) REFERENCES Students(Student_ID)
 )";

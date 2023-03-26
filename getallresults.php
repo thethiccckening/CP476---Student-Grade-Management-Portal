@@ -1,14 +1,5 @@
 <?php
-// Database connection code here
-$host = "localhost";
-$user = "root";
-$password = "sekou";
-$database = "CP476_Student_Management"; // this needs to already exit. 
-
-// Connect to the database
-$connection = new mysqli($host, $user, $password, $database);
-
-
+include 'dbconnection.php';
 
 $action = $_GET['action'];
 

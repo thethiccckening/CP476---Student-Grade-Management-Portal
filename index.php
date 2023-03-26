@@ -59,17 +59,6 @@
   </div>
 </form>
 
- <!--
-<div class="button-container">
-    <div>
-      <button id="add-student" class="action-button">Add Student</button>
-      <button id="add-course" class="action-button">Add Course</button>
-      <button id="add-final-grade" class="action-button">Add Final Grade</button>
-    </div>
-</div>
--->
-
-
   <div id="overlay" class="overlay hidden">
 
     <div class="overlay-content">
@@ -91,6 +80,27 @@
     <div id="form-container"></div>
 </div>
 
+
+
+<div id="update-overlay" class="overlay hidden">
+  <div class="overlay-content">
+    <h3>Results</h3>
+
+    <input  id="update_result" value="" style="display: none;">
+    <table id="update-results-table" border="1">
+      <thead id='update-thead' >
+        <!-- Headers will be populated here -->
+      </thead>
+      <tbody id="update-tbody">
+        <!-- Data will be populated here -->
+      </tbody>
+    </table>
+    <button id="save-overlay" class="action-button">Save</button>
+    <button id="close-update-overlay" class="action-button">Close</button>
+
+  </div>
+
+</div>
 
 </body>
 </html>
