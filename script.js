@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeUpdateOverlayButton = document.getElementById('close-update-overlay');
   const saveOverlayButton = document.getElementById('save-overlay');
   var updateResults = document.getElementById('update_result');
+  var f1_error_result = document.getElementById('f1_error_result');
+  var f2_error_result = document.getElementById('f2_error_result');
+  var f3_error_result = document.getElementById('f3_error_result');
 
 
   closeOverlayButton.addEventListener('click', closeOverlay);
@@ -36,14 +39,58 @@ document.addEventListener('DOMContentLoaded', () => {
     getData('search_student_final');
   });
 
+  function validateStudentID(studentId){
+    const retstudentId = studentId.trim(); //remove empty spaces
+    return /^\d+$/.test(retstudentId); //check if numbers only
+  }
+
+  function validateCourseCode(courseCode){
+    const retcourseCode = courseCode.trim(); //remove empty spaces
+    return /^[A-Z]{2}\d{3}$/.test(retcourseCode);
+  }
+
+  // check that grade is between 0-100 or 0.0 to 100.0
+  function validateGrade(gradedata){
+    error = true; 
+    gradedata.forEach((row) => {
+      const test1 = row.Test_1;
+      const test2 = row.Test_2;
+      const test3 = row.Test_3;
+      const final = row.Final_exam;
+
+      error1 = /^(?!.*[a-zA-Z])(?:\d{1,2}(?:\.\d)?|100(?:\.0)?)$/.test(test1); 
+      error2 = /^(?!.*[a-zA-Z])(?:\d{1,2}(?:\.\d)?|100(?:\.0)?)$/.test(test2); 
+      error3 = /^(?!.*[a-zA-Z])(?:\d{1,2}(?:\.\d)?|100(?:\.0)?)$/.test(test3); 
+      error4 = /^(?!.*[a-zA-Z])(?:\d{1,2}(?:\.\d)?|100(?:\.0)?)$/.test(final); 
+
+      console.log (error1) ;
+      console.log (error2) ;
+      console.log (error3) ;
+      console.log (error4) ;
+      error = error && error1 && error2 && error3 && error4;
+      console.log (error);
+
+
+    });
+    return error;
+   
+  }
+
 
   //function to handle general search of student DB
   function getData(action) {
+
     if (action == "search_student_info"){
       document.getElementById("update-overlay").classList.add("hidden");
 
       const studentId = document.getElementById("student-id").value;
-      
+      if (!validateStudentID(studentId)) {
+        f1_error_result.textContent  = 'Invalid input. Please enter a valid Student ID!';
+        return;
+      }
+
+      f1_error_result.textContent = "";
+
       fetch(`searchstudent.php?action=${action}&student-id=${studentId}`)
       .then(response => response.json())
       .then(data => {
@@ -67,6 +114,28 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (action == "search_student_course") {
       const studentId = document.getElementById("student-id2").value;
       const courseCode = document.getElementById("course-code").value;
+
+      //input validation and sanitization
+      if(studentId == ""){
+        if (!validateCourseCode(courseCode)) {
+          f2_error_result.textContent  = 'Invalid input. Please enter a valid Course Code!';
+          return;
+        }
+      } 
+      else if(courseCode == ""){
+        if (!validateStudentID(studentId)) {
+          f2_error_result.textContent  = 'Invalid input. Please enter a valid Student ID!';
+          return;
+        }
+      } else if (studentId != "" && courseCode != "" ) {
+        if (!validateStudentID(studentId)|| !validateCourseCode(courseCode)) {
+          f2_error_result.textContent  = 'Invalid input. Please enter a valid Student ID and Course Code!';
+          return;
+        }
+      }
+
+      f2_error_result.textContent = "";
+
 
       fetch(`searchstudent.php?action=${action}&student-id=${studentId}&course-code=${courseCode}`)
       .then(response => response.json())
@@ -95,6 +164,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const studentId = document.getElementById("student-id3").value;
       const courseCode = document.getElementById("course-code3").value;
+
+      //input validation and sanitization
+      if(studentId == ""){
+        if (!validateCourseCode(courseCode)) {
+          f3_error_result.textContent  = 'Invalid input. Please enter a valid Course Code!';
+          return;
+        }
+      } 
+      else if(courseCode == ""){
+        if (!validateStudentID(studentId)) {
+          f3_error_result.textContent  = 'Invalid input. Please enter a valid Student ID!';
+          return;
+        }
+      } else if (studentId != "" && courseCode != "" ) {
+        if (!validateStudentID(studentId)|| !validateCourseCode(courseCode)) {
+          f3_error_result.textContent  = 'Invalid input. Please enter a valid Student ID and Course Code!';
+          return;
+        }
+      }
+      f3_error_result.textContent = "";
 
       fetch(`searchstudent.php?action=${action}&student-id=${studentId}&course-code=${courseCode}`)
       .then(response => response.json())
@@ -258,9 +347,18 @@ document.addEventListener('DOMContentLoaded', () => {
         row[header] = td.textContent;
         // row[index] = td.textContent; only stores values at numeric indices
       });
+
       return row;
     });
 
+    //validate and sanitize
+    if (!validateGrade(data)) {
+      updateResults.value  = 'Invalid input. Please enter a valid Grade from 0 - 100!';
+      updateResults.style.display = 'block';
+      return;
+    } 
+
+    updateResults.value = "";
     //prepare data as JSON object to be sent to the server using POST
     fetch('updaterecord.php', {
       method: 'POST',
@@ -315,4 +413,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   }
 
+ 
 });

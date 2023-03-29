@@ -7,6 +7,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	$student_id = $_GET['student-id'];
 	$course_code = $_GET['course-code'];
 
+
+    //validate and sanitize
+	$student_id = filter_var($student_id, FILTER_VALIDATE_INT);
+	$student_id = filter_var($student_id, FILTER_SANITIZE_NUMBER_INT);
+
+	$coursepattern = "/^[a-zA-Z]{2}\d{3}$/";
+	$options = array("options" => array("regexp" => $coursepattern));
+	$course_code = filter_var($course_code, FILTER_VALIDATE_REGEXP, $options);
+
     $response = "";
 
     //delete from courses tables

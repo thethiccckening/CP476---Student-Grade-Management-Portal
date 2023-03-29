@@ -11,6 +11,9 @@ if ($action === 'search_student_info') {
 	  
 	// Get the data from form 1
 	$student_id = $_GET['student-id'];
+	//validate and sanitize
+	$student_id = filter_var($student_id, FILTER_VALIDATE_INT);
+	$student_id = filter_var($student_id, FILTER_SANITIZE_NUMBER_INT);
 
 	// Your SQL query and display code for form 1 here
 	$sql = "SELECT * FROM students WHERE Student_ID = ?";
@@ -38,6 +41,14 @@ if ($action === 'search_student_info') {
   	// Get the data from form 2
 	$student_id = $_GET['student-id'];
 	$course_code = $_GET['course-code'];
+
+	//validate and sanitize
+	$student_id = filter_var($student_id, FILTER_VALIDATE_INT);
+	$student_id = filter_var($student_id, FILTER_SANITIZE_NUMBER_INT);
+
+	$coursepattern = "/^[a-zA-Z]{2}\d{3}$/";
+	$options = array("options" => array("regexp" => $coursepattern));
+	$course_code = filter_var($course_code, FILTER_VALIDATE_REGEXP, $options);
 
 	// SQL query to search for course code and student code
 	if ( $student_id == "") {
@@ -77,6 +88,13 @@ if ($action === 'search_student_info') {
 	  $student_id = $_GET['student-id'];
 	  $course_code = $_GET['course-code'];
 
+	  //validate and sanitize
+	  $student_id = filter_var($student_id, FILTER_VALIDATE_INT);
+	  $student_id = filter_var($student_id, FILTER_SANITIZE_NUMBER_INT);
+	  
+	  $coursepattern = "/^[a-zA-Z]{2}\d{3}$/";
+	  $options = array("options" => array("regexp" => $coursepattern));
+	  $course_code = filter_var($course_code, FILTER_VALIDATE_REGEXP, $options);
 
 	  // SQL query to search for course code and student code
 	if ( $student_id == "") {

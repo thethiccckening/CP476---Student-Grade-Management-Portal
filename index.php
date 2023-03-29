@@ -23,8 +23,9 @@
   <input type="hidden" name="form_name" value="search_student_info">
   <div class="form-row">
     <h3>Search Student Information</h3>
+    <label id="f1_error_result"></label>
     <label for="student-id">Enter Student ID:</label>
-    <input type="text" id="student-id" name="student-id">
+    <input type="text" id="student-id" name="student-id" required>
     <div >
       <button class="action-button" type="button" id="search_student_info">Search</button>
   </div>
@@ -35,6 +36,7 @@
   <input type="hidden" name="form_name" value="search_student_course">
   <div class="form-row">
     <h3 >Search Course Results for a Student</h3>
+    <label id="f2_error_result"></label>
     <label for="student-name" id="student-name-id">Enter Student ID:</label>
     <input type="text" id="student-id2" name="student-id">
     <label for="student-name">Enter Course Code:</label>
@@ -49,6 +51,7 @@
   <input type="hidden" name="form_name" value="search_student_final">
   <div class="form-row">
     <h3 >Search Final grade by Course Code and Student ID</h3>
+    <label id="f3_error_result"></label>
     <label for="student-name">Enter Student ID:</label>
     <input type="text" id="student-id3" name="student-id">
     <label for="student-name">Enter Course Code:</label>

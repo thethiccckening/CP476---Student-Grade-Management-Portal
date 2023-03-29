@@ -16,6 +16,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $test2 = $row['Test_2'];
         $test3 = $row['Test_3'];
         $final = $row['Final_exam'];
+
+        //validate and sanitize
+        $id = filter_var($id, FILTER_VALIDATE_INT);
+        $id = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
+
+        $coursepattern = "/^[a-zA-Z]{2}\d{3}$/";
+        $options = array("options" => array("regexp" => $coursepattern));
+        $course = filter_var($course, FILTER_VALIDATE_REGEXP, $options);
+
         //prepare sql queryl
         $sql = "UPDATE Courses SET Test_1 = ?, Test_2 = ?, Test_3 = ?, Final_exam = ? WHERE Student_ID = ? AND Course_Code = ?";
         $stmt = $connection->prepare($sql);
