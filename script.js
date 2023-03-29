@@ -184,6 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Create table rows using arrow funcion
     data.forEach(row => {
+      var rowId = '';
       const tr = document.createElement("tr");
       for (const key in row) {
         const td = document.createElement("td");
@@ -192,10 +193,34 @@ document.addEventListener('DOMContentLoaded', () => {
             td.setAttribute("contenteditable", "true");
           }
         } 
+
+        //set an identifier for each row to be studentId and coursecode
+        if (key == "Student_ID" || key == "Course_Code") { // Set the row identifier
+          rowId += row[key]+'+'; 
+        }
+
         td.textContent = row[key];
         tr.appendChild(td);
         
       }
+      if( update == 1) {
+        // create a delete button to delete student course and event listener
+        const deleteStudentCourse = document.createElement("button");
+        deleteStudentCourse.textContent = "Delete";
+        deleteStudentCourse.classList.add("action-button");
+        deleteStudentCourse.setAttribute("data-row-identifier", rowId); // Set custom attribute
+        deleteStudentCourse.addEventListener("click", (event) => {
+          const rowId = event.target.getAttribute("data-row-identifier");
+          deleteStudentCourse.disabled = true;//disable buttong so not usable. 
+          deletedata(rowId);
+        });
+
+        //add button to row in own column
+        const delbuttonTd = document.createElement("td");
+        delbuttonTd.appendChild(deleteStudentCourse);
+        tr.appendChild(delbuttonTd);
+      }
+
       tbody.appendChild(tr);
     });
   }
@@ -263,7 +288,31 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
   }
-//not saving and showing error.
-  
+
+  //delete student from course table and update final table
+  function deletedata(rowId){
+    const splitRow = rowId.split('+');
+    const studentId = splitRow[0];
+    const courseCode = splitRow[1];
+
+    //prepare data as JSON object to be sent to the server using POST
+    fetch(`deletestudentcourse.php?student-id=${studentId}&course-code=${courseCode}`)
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'error') {
+          updateResults.value = 'Error deleting Student Record! Please try again later!';
+        } else {
+          updateResults.value = 'Student Record Successfully deleted! Please refresh the page!';
+        }
+        //update action results to user
+        updateResults.style.display = 'block';
+      })
+      .catch(error => {
+        updateResults.value = 'Error deleting data';
+        updateResults.style.display = 'block';
+
+    });
+
+  }
 
 });
