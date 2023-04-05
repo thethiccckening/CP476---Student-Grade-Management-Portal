@@ -64,7 +64,7 @@ $sql = "CREATE TABLE FinalGrades (
 )";
 
 if ($connection->query($sql) === TRUE) {
-    echo "FinalGrades table created successfully\n";
+    echo "Final Grades table created successfully\n";
 } else {
     echo "Error creating FinalGrades table: " . $connection->error;
 }

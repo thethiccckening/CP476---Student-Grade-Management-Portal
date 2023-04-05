@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerRow = document.createElement("tr");
     for (const key in data[0]) {
       const th = document.createElement("th");
-      th.textContent = key;
+      th.textContent = key.replace('_', " ");
       headerRow.appendChild(th);
     }
     thead.appendChild(headerRow);

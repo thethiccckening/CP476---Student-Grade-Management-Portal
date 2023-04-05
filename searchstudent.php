@@ -102,9 +102,11 @@ if ($action === 'search_student_info') {
 		$stmt = $connection->prepare($sql);
 		$stmt->bind_param("s", $course_code); 
 	} else if ($course_code == ""){
+
 		$sql = "SELECT * FROM FinalGrades WHERE Student_ID = ?";
 		$stmt = $connection->prepare($sql);
 		$stmt->bind_param("i", $student_id); 
+		
 	} else {
 		$sql = "SELECT * FROM FinalGrades WHERE Student_ID = ? AND Course_Code = ?";
 		$stmt = $connection->prepare($sql);
